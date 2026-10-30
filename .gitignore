@@ -13,3 +13,9 @@
 .externalNativeBuild
 .cxx
 local.properties
+# Linux temporary files
+*.swp
+*~
+
+# Android Studio logs
+/studio.logs
