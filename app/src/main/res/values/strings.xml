@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">QuiCall</string>
+    <string name="contacts_btn">Contacts</string>
+    <string name="add_contact_btn">Add Contact</string>
+    <string name="dial_btn">Dial</string>
+    <string name="search_bar_hint">Search</string>
+    <string name="delete_contact">Delete Contact</string>
+    <string name="yes">Delete</string>
+    <string name="no">Cancel</string>
+    <string name="call_btn">Call</string>
+<!--    <string name=""></string>-->
+<!--    <string name=""></string>-->
+<!--    <string name=""></string>-->
+<!--    <string name=""></string>-->
+<!--    <string name=""></string>-->
+<!--    <string name=""></string>-->
+<!--    <string name=""></string>-->
+<!--    <string name=""></string>-->
+</resources>

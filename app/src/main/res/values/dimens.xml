@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="btn_size">72dp</dimen>
+    <dimen name="btn_icon_size">48dp</dimen>
+    <dimen name="profile_image_size">120dp</dimen>
+    <dimen name="center_padding">48dp</dimen>
+    <dimen name="card_vertical_padding">16dp</dimen>
+    <dimen name="btn_dial_digit_padding">8dp</dimen>
+    <dimen name="btn_dial_drawer_padding">16dp</dimen>
+    <dimen name="btn_dial_call_padding">8dp</dimen>
+    <dimen name="text_dial_padding">16dp</dimen>
+    <dimen name="text_field_padding">16dp</dimen>
+</resources>
