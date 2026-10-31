@@ -46,6 +46,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.quicall.R
+import com.example.quicall.screens.components.CombinedActionDialButton
 import com.example.quicall.ui.theme.Shapes
 import kotlinx.coroutines.awaitCancellation
 
@@ -142,18 +143,38 @@ fun StartingPageModal(
             ) {
                 dialPadKeys.forEach { digit ->
                     key(digit) {
-                        Button(
-                            onClick = {
-                                onDialButtonPressed(digit)
-                            },
-                            modifier = Modifier
-                                .weight(1f)
-                                .padding(dimensionResource(R.dimen.btn_dial_digit_padding))
-                                .aspectRatio(dialButtonRatio),
-                            shape = Shapes.medium
-                        ) {
-                            Text(digit, fontSize = 20.sp)
+                        if (digit == "0") {
+                            CombinedActionDialButton(
+                                onClick = {
+                                    onDialButtonPressed(digit)
+                                },
+                                onLongClick = {
+                                    onDialButtonPressed("+")
+                                },
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .padding(dimensionResource(R.dimen.btn_dial_digit_padding))
+                                    .aspectRatio(dialButtonRatio),
+                                shape = Shapes.medium,
+                                secondDigit = "+"
+                            ) {
+                                Text(digit, fontSize = 20.sp)
+                            }
+                        } else {
+                            Button(
+                                onClick = {
+                                    onDialButtonPressed(digit)
+                                },
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .padding(dimensionResource(R.dimen.btn_dial_digit_padding))
+                                    .aspectRatio(dialButtonRatio),
+                                shape = Shapes.medium,
+                            ) {
+                                Text(digit, fontSize = 20.sp)
+                            }
                         }
+
                     }
                 }
             }
