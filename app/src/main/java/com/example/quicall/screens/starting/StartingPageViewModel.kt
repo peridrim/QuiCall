@@ -66,7 +66,7 @@ class StartingPageViewModel : ViewModel() {
         val currentSelection = _uiState.value.dialDigits.selection
         val currentText = _uiState.value.dialDigits.text
 
-        if (currentText.length < 10) {
+        if (currentText.length < 14) {
             val beforeSelection = currentText.substring(0, currentSelection.start)
             val afterSelection = currentText.substring(currentSelection.end)
 
