@@ -10,4 +10,5 @@
     <dimen name="btn_dial_call_padding">8dp</dimen>
     <dimen name="text_dial_padding">16dp</dimen>
     <dimen name="text_field_padding">16dp</dimen>
+    <dimen name="btn_save_cancel_space">64dp</dimen>
 </resources>

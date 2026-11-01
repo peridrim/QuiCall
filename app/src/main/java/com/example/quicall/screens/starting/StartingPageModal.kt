@@ -91,15 +91,6 @@ fun StartingPageModal(
                     .horizontalScroll(rememberScrollState()),
                 horizontalArrangement = Arrangement.End
             ) {
-//                Text(
-//                    modifier = Modifier
-//                        .weight(1f)
-//                        .padding(horizontal = dimensionResource(R.dimen.text_dial_padding)),
-//                    text = uiState.dialDigits.take(10),
-//                    softWrap = false,
-//                    textAlign = TextAlign.End,
-//                    style = MaterialTheme.typography.headlineMedium
-//                )
 
                 DisableSoftKeyboard {
                     TextField(
