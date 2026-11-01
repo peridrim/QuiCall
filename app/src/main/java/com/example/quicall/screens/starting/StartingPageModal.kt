@@ -56,6 +56,39 @@ private val dialPadKeys = listOf("1", "2", "3", "4", "5", "6", "7", "8", "9", "*
 @Composable
 fun StartingPageModal(
     modifier: Modifier = Modifier,
+    viewModel: StartingPageViewModel = viewModel(),
+    sheetState: SheetState,
+    onCallAttempt: (String) -> Unit = {}
+
+) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    StartingPageModalContent(
+        modifier = modifier,
+        sheetState = sheetState,
+        onCallAttempt = onCallAttempt,
+        onDialDismissed = {
+            viewModel.onDialShow(false)
+        },
+        dialDigits = uiState.dialDigits,
+        onDialDigitsChanged = {
+            viewModel.onDialDigitsChanged(it)
+        },
+        onDialDeleteButtonPressed = {
+            viewModel.onDialDeleteButtonPressed()
+        },
+        onDialButtonPressed = { digit ->
+            viewModel.onDialButtonPressed(digit)
+        },
+        phoneNumberToCall = { phoneNumber ->
+            viewModel.phoneNumberToCall(phoneNumber)
+        }
+    )
+}
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun StartingPageModalContent(
+    modifier: Modifier = Modifier,
     sheetState: SheetState,
     onCallAttempt: (String) -> Unit = {},
     onDialDismissed: () -> Unit = {},
@@ -200,6 +233,7 @@ fun StartingPageModal(
         }
     }
 }
+
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun DisableSoftKeyboard(content: @Composable () -> Unit) {

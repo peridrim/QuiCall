@@ -154,24 +154,9 @@ fun QuiCallApp() {
     if (uiState.dialSheetState) {
         StartingPageModal(
             modifier = Modifier.fillMaxWidth(),
+            viewModel = viewModel,
             sheetState = sheetState,
-            onCallAttempt = onCallAttempt,
-            onDialDismissed = {
-                viewModel.onDialShow(false)
-            },
-            dialDigits = uiState.dialDigits,
-            onDialDigitsChanged = {
-                viewModel.onDialDigitsChanged(it)
-            },
-            onDialDeleteButtonPressed = {
-                viewModel.onDialDeleteButtonPressed()
-            },
-            onDialButtonPressed = { digit ->
-                viewModel.onDialButtonPressed(digit)
-            },
-            phoneNumberToCall = { phoneNumber ->
-                viewModel.phoneNumberToCall(phoneNumber)
-            }
+            onCallAttempt = onCallAttempt
         )
     }
 }
