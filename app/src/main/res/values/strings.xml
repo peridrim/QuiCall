@@ -10,10 +10,10 @@
     <string name="call_btn">Call</string>
     <string name="save_contact_btn">Save</string>
     <string name="cancel_contact_btn">Cancel</string>
-<!--    <string name=""></string>-->
-<!--    <string name=""></string>-->
-<!--    <string name=""></string>-->
-<!--    <string name=""></string>-->
+    <string name="text_field_label_name">Name</string>
+    <string name="text_field_label_lastname">Last Name</string>
+    <string name="text_field_label_phone_number">Phone Number</string>
+    <string name="text_field_label_email">E-mail</string>
 <!--    <string name=""></string>-->
 <!--    <string name=""></string>-->
 </resources>

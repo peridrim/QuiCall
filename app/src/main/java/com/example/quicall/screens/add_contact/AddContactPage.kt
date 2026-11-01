@@ -1,16 +1,6 @@
 package com.example.quicall.screens.add_contact
 
 import android.content.res.Configuration
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.AnimatedContentTransitionScope
-import androidx.compose.animation.core.EaseIn
-import androidx.compose.animation.core.spring
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideOutHorizontally
-import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -18,17 +8,14 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -39,16 +26,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.quicall.R
+import com.example.quicall.data.FormField
 import com.example.quicall.screens.components.InfoFieldsSection
 
 @Composable
@@ -62,7 +49,8 @@ fun CreateContactPage(
     CreateContactContent(
         modifier = modifier,
         uiState = uiState,
-        onBackClicked = { navController.popBackStack() }
+        onBackClicked = { navController.popBackStack() },
+        onTextFieldValueChange = { newValue, field -> viewModel.onTextFieldValueChange(newValue, field) }
     )
 }
 
@@ -71,7 +59,8 @@ fun CreateContactPage(
 fun CreateContactContent(
     modifier: Modifier = Modifier,
     uiState: AddContactUiState,
-    onBackClicked: () -> Unit = {}
+    onBackClicked: () -> Unit = {},
+    onTextFieldValueChange: (String, FormField) -> Unit = { _, _ -> }
 ) {
 
     val scrollState = rememberScrollState()
@@ -129,7 +118,8 @@ fun CreateContactContent(
 
                 InfoFieldsSection(
                     uiState = uiState,
-                    onBackClicked = onBackClicked
+                    onBackClicked = onBackClicked,
+                    onTextFieldValueChange = onTextFieldValueChange
                 )
 
             }
@@ -164,7 +154,8 @@ fun CreateContactContent(
                         .weight(1f)
                         .imePadding()
                         .verticalScroll(scrollState),
-                    onBackClicked = onBackClicked
+                    onBackClicked = onBackClicked,
+                    onTextFieldValueChange = onTextFieldValueChange
                 )
 
             }

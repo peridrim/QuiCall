@@ -5,9 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
@@ -21,8 +19,9 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.text.input.TextFieldValue
 import com.example.quicall.R
+import com.example.quicall.data.FormField
 import com.example.quicall.screens.add_contact.AddContactUiState
 
 @Composable
@@ -30,7 +29,13 @@ fun InfoFieldsSection(
     modifier: Modifier = Modifier,
     uiState: AddContactUiState,
     onBackClicked: () -> Unit = {},
+    onTextFieldValueChange: (String, FormField) -> Unit = { _, _ -> }
 ) {
+    val nameFieldText = stringResource(R.string.text_field_label_name)
+    val lastNameFieldText = stringResource(R.string.text_field_label_lastname)
+    val phoneNumberFieldText = stringResource(R.string.text_field_label_phone_number)
+    val emailFieldText = stringResource(R.string.text_field_label_email)
+
     val textFieldModifier = Modifier
         .fillMaxWidth()
         .padding(all = dimensionResource(R.dimen.text_field_padding))
@@ -43,14 +48,14 @@ fun InfoFieldsSection(
         OutlinedTextField(
             modifier = textFieldModifier,
             value = uiState.name,
-            onValueChange = {},
+            onValueChange = { newValue -> onTextFieldValueChange(newValue, FormField.NAME) },
             leadingIcon = {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_person),
                     contentDescription = null
                 )
             },
-            label = { Text(text = "Name") },
+            label = { Text(text = nameFieldText) },
             singleLine = true,
             isError = false,
             supportingText = {},
@@ -60,14 +65,14 @@ fun InfoFieldsSection(
         OutlinedTextField(
             modifier = textFieldModifier,
             value = uiState.lastName,
-            onValueChange = {},
+            onValueChange = { newValue -> onTextFieldValueChange(newValue, FormField.LAST_NAME) },
             leadingIcon = {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_person),
                     contentDescription = null
                 )
             },
-            label = { Text(text = "Last Name") },
+            label = { Text(text = lastNameFieldText) },
             singleLine = true,
             isError = false,
             supportingText = {},
@@ -77,14 +82,14 @@ fun InfoFieldsSection(
         OutlinedTextField(
             modifier = textFieldModifier,
             value = uiState.phoneNumber,
-            onValueChange = {},
+            onValueChange = { newValue -> onTextFieldValueChange(newValue, FormField.PHONE_NUMBER) },
             leadingIcon = {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_add_phone_number),
                     contentDescription = null
                 )
             },
-            label = { Text(text = "Phone Number") },
+            label = { Text(text = phoneNumberFieldText) },
             singleLine = true,
             isError = false,
             supportingText = {},
@@ -94,14 +99,14 @@ fun InfoFieldsSection(
         OutlinedTextField(
             modifier = textFieldModifier,
             value = uiState.email,
-            onValueChange = {},
+            onValueChange = { newValue -> onTextFieldValueChange(newValue, FormField.EMAIL) },
             leadingIcon = {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_email),
                     contentDescription = null
                 )
             },
-            label = { Text(text = "E-mail") },
+            label = { Text(text = emailFieldText) },
             singleLine = true,
             isError = false,
             supportingText = {},
