@@ -1,5 +1,6 @@
 package com.example.quicall.screens.components
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,11 +16,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.TextFieldValue
 import com.example.quicall.R
 import com.example.quicall.data.FormField
 import com.example.quicall.screens.add_contact.AddContactUiState
@@ -28,18 +31,23 @@ import com.example.quicall.screens.add_contact.AddContactUiState
 fun InfoFieldsSection(
     modifier: Modifier = Modifier,
     uiState: AddContactUiState,
+    onTextFieldEmpty: (Boolean) -> Unit = {},
     onBackClicked: () -> Unit = {},
-    onTextFieldValueChange: (String, FormField) -> Unit = { _, _ -> }
+    onTextFieldValueChange: (String, FormField) -> Unit = { _, _ -> },
+    showTextFieldError: (Boolean, Boolean, FormField) -> Unit = { _, _, _ ->},
+    onSaveContact: () -> Unit = {}
 ) {
     val nameFieldText = stringResource(R.string.text_field_label_name)
     val lastNameFieldText = stringResource(R.string.text_field_label_lastname)
     val phoneNumberFieldText = stringResource(R.string.text_field_label_phone_number)
     val emailFieldText = stringResource(R.string.text_field_label_email)
+    val context = LocalContext.current
 
     val textFieldModifier = Modifier
         .fillMaxWidth()
         .padding(all = dimensionResource(R.dimen.text_field_padding))
     val keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
+    val focusManager = LocalFocusManager.current
 
     Column(
         modifier = modifier,
@@ -57,9 +65,20 @@ fun InfoFieldsSection(
             },
             label = { Text(text = nameFieldText) },
             singleLine = true,
-            isError = false,
-            supportingText = {},
-            keyboardOptions = keyboardOptions
+            isError = uiState.isNameFieldEmpty,
+            supportingText = { if (uiState.isSupportNameTextVisible) Text(stringResource(R.string.support_text_field_empty_name)) },
+            keyboardOptions = keyboardOptions,
+            keyboardActions = KeyboardActions(
+                onNext = {
+                    if (uiState.name.isNotBlank()) {
+                        onTextFieldEmpty(false)
+                        showTextFieldError(false, false, FormField.NAME)
+                        focusManager.moveFocus(FocusDirection.Next)
+                    } else {
+                        focusManager.moveFocus(FocusDirection.Next)
+                    }
+                }
+            )
         )
 
         OutlinedTextField(
@@ -91,9 +110,20 @@ fun InfoFieldsSection(
             },
             label = { Text(text = phoneNumberFieldText) },
             singleLine = true,
-            isError = false,
-            supportingText = {},
-            keyboardOptions = keyboardOptions
+            isError = uiState.isPhoneNumberFieldEmpty,
+            supportingText = { if (uiState.isSupportPhoneNumberTextVisible) Text(stringResource(R.string.support_text_field_empty_phone_number)) },
+            keyboardOptions = keyboardOptions,
+            keyboardActions = KeyboardActions(
+                onNext = {
+                    if (uiState.phoneNumber.isNotBlank()) {
+                        onTextFieldEmpty(false)
+                        showTextFieldError(false, false, FormField.PHONE_NUMBER)
+                        focusManager.moveFocus(FocusDirection.Next)
+                    } else {
+                        focusManager.moveFocus(FocusDirection.Next)
+                    }
+                }
+            )
         )
 
         OutlinedTextField(
@@ -113,7 +143,7 @@ fun InfoFieldsSection(
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(
                 onDone = {
-                    //TODO clear focus
+                    focusManager.clearFocus()
                 }
             )
         )
@@ -126,7 +156,9 @@ fun InfoFieldsSection(
                 modifier = Modifier
                     .weight(1f)
                     .aspectRatio(3f),
-                onClick = {}
+                onClick = {
+                        onSaveContact()
+                }
             ) {
                 Text(stringResource(R.string.save_contact_btn))
             }

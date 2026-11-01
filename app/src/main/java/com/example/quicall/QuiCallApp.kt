@@ -31,7 +31,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.quicall.screens.add_contact.AddContactPageViewModel
 import com.example.quicall.screens.add_contact.CreateContactPage
 import com.example.quicall.screens.starting.StartingPage
 import com.example.quicall.screens.starting.StartingPageModal

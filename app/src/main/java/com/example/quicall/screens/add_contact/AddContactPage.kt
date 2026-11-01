@@ -28,7 +28,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -50,7 +49,9 @@ fun CreateContactPage(
         modifier = modifier,
         uiState = uiState,
         onBackClicked = { navController.popBackStack() },
-        onTextFieldValueChange = { newValue, field -> viewModel.onTextFieldValueChange(newValue, field) }
+        onTextFieldValueChange = { newValue, field -> viewModel.onTextFieldValueChange(newValue, field) },
+        showTextFieldError = { isTextVisible, isFieldEmpty, field -> viewModel.showTextFieldError(isTextVisible, isFieldEmpty, field) },
+        onSaveContact = { viewModel.onSaveContact() }
     )
 }
 
@@ -59,8 +60,11 @@ fun CreateContactPage(
 fun CreateContactContent(
     modifier: Modifier = Modifier,
     uiState: AddContactUiState,
+    onTextFieldEmpty: (Boolean) -> Unit = {},
     onBackClicked: () -> Unit = {},
-    onTextFieldValueChange: (String, FormField) -> Unit = { _, _ -> }
+    onTextFieldValueChange: (String, FormField) -> Unit = { _, _ -> },
+    showTextFieldError: (Boolean, Boolean, FormField) -> Unit = { _, _, _ ->},
+    onSaveContact: () -> Unit = {}
 ) {
 
     val scrollState = rememberScrollState()
@@ -119,7 +123,10 @@ fun CreateContactContent(
                 InfoFieldsSection(
                     uiState = uiState,
                     onBackClicked = onBackClicked,
-                    onTextFieldValueChange = onTextFieldValueChange
+                    onTextFieldValueChange = onTextFieldValueChange,
+                    onTextFieldEmpty = onTextFieldEmpty,
+                    showTextFieldError = showTextFieldError,
+                    onSaveContact = onSaveContact
                 )
 
             }
@@ -155,7 +162,10 @@ fun CreateContactContent(
                         .imePadding()
                         .verticalScroll(scrollState),
                     onBackClicked = onBackClicked,
-                    onTextFieldValueChange = onTextFieldValueChange
+                    onTextFieldValueChange = onTextFieldValueChange,
+                    onTextFieldEmpty = onTextFieldEmpty,
+                    showTextFieldError = showTextFieldError,
+                    onSaveContact = onSaveContact
                 )
 
             }
