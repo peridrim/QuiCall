@@ -60,7 +60,6 @@ fun CreateContactPage(
 fun CreateContactContent(
     modifier: Modifier = Modifier,
     uiState: AddContactUiState,
-    onTextFieldEmpty: (Boolean) -> Unit = {},
     onBackClicked: () -> Unit = {},
     onTextFieldValueChange: (String, FormField) -> Unit = { _, _ -> },
     showTextFieldError: (Boolean, Boolean, FormField) -> Unit = { _, _, _ ->},
@@ -124,7 +123,6 @@ fun CreateContactContent(
                     uiState = uiState,
                     onBackClicked = onBackClicked,
                     onTextFieldValueChange = onTextFieldValueChange,
-                    onTextFieldEmpty = onTextFieldEmpty,
                     showTextFieldError = showTextFieldError,
                     onSaveContact = onSaveContact
                 )
@@ -163,7 +161,6 @@ fun CreateContactContent(
                         .verticalScroll(scrollState),
                     onBackClicked = onBackClicked,
                     onTextFieldValueChange = onTextFieldValueChange,
-                    onTextFieldEmpty = onTextFieldEmpty,
                     showTextFieldError = showTextFieldError,
                     onSaveContact = onSaveContact
                 )

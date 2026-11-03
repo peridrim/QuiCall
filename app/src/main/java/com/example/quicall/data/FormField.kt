@@ -1,9 +1,9 @@
 package com.example.quicall.data
 
-enum class FormField(val isRequired: Boolean = false) {
-    NAME(true),
+enum class FormField {
+    NAME,
     LAST_NAME,
-    PHONE_NUMBER(true),
+    PHONE_NUMBER,
     EMAIL,
     UNSPECIFIED
 }

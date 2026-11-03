@@ -31,7 +31,6 @@ import com.example.quicall.screens.add_contact.AddContactUiState
 fun InfoFieldsSection(
     modifier: Modifier = Modifier,
     uiState: AddContactUiState,
-    onTextFieldEmpty: (Boolean) -> Unit = {},
     onBackClicked: () -> Unit = {},
     onTextFieldValueChange: (String, FormField) -> Unit = { _, _ -> },
     showTextFieldError: (Boolean, Boolean, FormField) -> Unit = { _, _, _ ->},
@@ -41,7 +40,6 @@ fun InfoFieldsSection(
     val lastNameFieldText = stringResource(R.string.text_field_label_lastname)
     val phoneNumberFieldText = stringResource(R.string.text_field_label_phone_number)
     val emailFieldText = stringResource(R.string.text_field_label_email)
-    val context = LocalContext.current
 
     val textFieldModifier = Modifier
         .fillMaxWidth()
@@ -71,7 +69,6 @@ fun InfoFieldsSection(
             keyboardActions = KeyboardActions(
                 onNext = {
                     if (uiState.name.isNotBlank()) {
-                        onTextFieldEmpty(false)
                         showTextFieldError(false, false, FormField.NAME)
                         focusManager.moveFocus(FocusDirection.Next)
                     } else {
@@ -116,7 +113,6 @@ fun InfoFieldsSection(
             keyboardActions = KeyboardActions(
                 onNext = {
                     if (uiState.phoneNumber.isNotBlank()) {
-                        onTextFieldEmpty(false)
                         showTextFieldError(false, false, FormField.PHONE_NUMBER)
                         focusManager.moveFocus(FocusDirection.Next)
                     } else {
