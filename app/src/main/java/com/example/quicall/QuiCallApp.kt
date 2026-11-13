@@ -2,12 +2,16 @@ package com.example.quicall
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -20,10 +24,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -31,6 +37,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.window.core.layout.WindowSizeClass
 import com.example.quicall.screens.add_contact.CreateContactPage
 import com.example.quicall.screens.starting.StartingPage
 import com.example.quicall.screens.starting.StartingPageModal
@@ -49,6 +56,8 @@ fun QuiCallApp() {
     val context = LocalContext.current
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = backStackEntry?.destination?.route
+    val configuration = LocalConfiguration.current
+    val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
     val executeActualCall: (String) -> Unit = { phoneNumber ->
 
@@ -90,11 +99,18 @@ fun QuiCallApp() {
         else -> 0
     }
     val windowAdaptiveInfo = currentWindowAdaptiveInfo()
+    val windowSizeClass = windowAdaptiveInfo.windowSizeClass
+    val isExpanded = windowSizeClass.isWidthAtLeastBreakpoint(
+        WindowSizeClass.WIDTH_DP_EXPANDED_LOWER_BOUND
+    )
 
     NavigationSuiteScaffold(
         layoutType =
-            if (currentSelectedIndex == 1) NavigationSuiteType.None
-                else NavigationSuiteScaffoldDefaults.calculateFromAdaptiveInfo(windowAdaptiveInfo),
+            when {
+                currentSelectedIndex == 1 -> NavigationSuiteType.None
+                isLandscape -> NavigationSuiteType.NavigationRail
+                else -> NavigationSuiteScaffoldDefaults.calculateFromAdaptiveInfo(windowAdaptiveInfo)
+            },
         navigationSuiteItems = {
             menuItems.forEachIndexed { index, item ->
                 item(
@@ -127,30 +143,44 @@ fun QuiCallApp() {
             }
         }
     ) {
-        NavHost(
-            navController = navController,
-            startDestination = "contacts",
-            modifier = Modifier.fillMaxSize()
-        ) {
-            composable("contacts") {
-                StartingPage(
-                    Modifier.fillMaxSize(),
-                    viewModel = viewModel,
-                    navController = navController,
-                    onCallAttempt = onCallAttempt
-                )
+        Row(modifier = Modifier.fillMaxSize()) {
+            NavHost(
+                navController = navController,
+                startDestination = "contacts",
+                modifier = Modifier.weight(1f).fillMaxHeight()
+            ) {
+                composable("contacts") {
+                    StartingPage(
+                        Modifier.fillMaxSize(),
+                        viewModel = viewModel,
+                        navController = navController,
+                        onCallAttempt = onCallAttempt
+                    )
+                }
+
+                composable(route = "add_contact") {
+                    CreateContactPage(
+                        Modifier.fillMaxSize(),
+                        navController = navController,
+                    )
+                }
             }
 
-            composable(route = "add_contact") {
-                CreateContactPage(
-                    Modifier.fillMaxSize(),
-                    navController = navController,
+            if (uiState.dialSheetState && isExpanded) {
+                StartingPageModal(
+                    modifier = Modifier
+                        .width(320.dp)
+                        .fillMaxHeight(),
+                    viewModel = viewModel,
+                    sheetState = sheetState,
+                    onCallAttempt = onCallAttempt,
+                    isExpanded = true
                 )
             }
         }
     }
 
-    if (uiState.dialSheetState) {
+    if (uiState.dialSheetState && !isExpanded) {
         StartingPageModal(
             modifier = Modifier.fillMaxWidth(),
             viewModel = viewModel,

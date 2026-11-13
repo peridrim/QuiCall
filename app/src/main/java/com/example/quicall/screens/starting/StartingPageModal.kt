@@ -1,16 +1,16 @@
 package com.example.quicall.screens.starting
 
-import android.content.res.Configuration
-import androidx.compose.foundation.gestures.detectTapGestures
+import android.widget.Toast
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -27,20 +27,22 @@ import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.InterceptPlatformTextInput
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -58,31 +60,42 @@ fun StartingPageModal(
     modifier: Modifier = Modifier,
     viewModel: StartingPageViewModel = viewModel(),
     sheetState: SheetState,
-    onCallAttempt: (String) -> Unit = {}
-
+    onCallAttempt: (String) -> Unit = {},
+    isExpanded: Boolean = false
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    val configuration = LocalConfiguration.current
+    val screenWidth = configuration.screenWidthDp.dp
+    val context = LocalContext.current
+    LaunchedEffect(Unit) {
+        Toast.makeText(
+            context,
+            configuration.screenWidthDp.toString(),
+            Toast.LENGTH_SHORT
+        ).show()
+    }
+
+    val dialPadContent: @Composable () -> Unit = {
+        DialPadLayout(
+            modifier = modifier,
+            dialDigits = uiState.dialDigits,
+            onDialDigitsChanged = viewModel::onDialDigitsChanged,
+            onDialDeleteButtonPressed = viewModel::onDialDeleteButtonPressed,
+            onDialButtonPressed = viewModel::onDialButtonPressed,
+            phoneNumberToCall = viewModel::phoneNumberToCall,
+            onCallAttempt = onCallAttempt
+        )
+    }
 
     StartingPageModalContent(
         modifier = modifier,
         sheetState = sheetState,
-        onCallAttempt = onCallAttempt,
+        isExpanded = isExpanded,
+        dialPadContent = dialPadContent,
         onDialDismissed = {
             viewModel.onDialShow(false)
         },
-        dialDigits = uiState.dialDigits,
-        onDialDigitsChanged = {
-            viewModel.onDialDigitsChanged(it)
-        },
-        onDialDeleteButtonPressed = {
-            viewModel.onDialDeleteButtonPressed()
-        },
-        onDialButtonPressed = { digit ->
-            viewModel.onDialButtonPressed(digit)
-        },
-        phoneNumberToCall = { phoneNumber ->
-            viewModel.phoneNumberToCall(phoneNumber)
-        }
     )
 }
 @OptIn(ExperimentalMaterial3Api::class)
@@ -90,30 +103,50 @@ fun StartingPageModal(
 fun StartingPageModalContent(
     modifier: Modifier = Modifier,
     sheetState: SheetState,
-    onCallAttempt: (String) -> Unit = {},
+    isExpanded: Boolean,
+    dialPadContent: @Composable () -> Unit = {},
     onDialDismissed: () -> Unit = {},
+) {
+
+    if (isExpanded) {
+        dialPadContent()
+    } else {
+        ModalBottomSheet(
+            modifier = modifier,
+            onDismissRequest = {
+                onDialDismissed()
+            },
+            sheetState = sheetState
+        ) {
+
+            dialPadContent()
+
+
+        }
+    }
+}
+
+@Composable
+private fun DialPadLayout(
+    modifier: Modifier = Modifier,
     dialDigits: TextFieldValue,
     onDialDigitsChanged: (TextFieldValue) -> Unit,
     onDialDeleteButtonPressed: () -> Unit = {},
     onDialButtonPressed: (String) -> Unit = {},
-    phoneNumberToCall: (String) -> Unit = {}
+    phoneNumberToCall: (String) -> Unit = {},
+    onCallAttempt: (String) -> Unit = {}
 ) {
-    val configuration = LocalConfiguration.current
-    val isPortrait = configuration.orientation == Configuration.ORIENTATION_PORTRAIT
-    val dialButtonRatio = if (isPortrait) 2f else 4f
+    BoxWithConstraints(modifier = modifier) {
+        val dialButtonRatio = when {
+            maxWidth < 400.dp -> 2f
+            maxWidth < 600.dp -> 2.5f
+            else -> 3f
+        }
 
-
-    ModalBottomSheet(
-        modifier = modifier,
-        onDismissRequest = {
-            onDialDismissed()
-        },
-        sheetState = sheetState
-    ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight(0.55f)
+                .heightIn(max = maxHeight)
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Bottom
@@ -231,9 +264,9 @@ fun StartingPageModalContent(
                 }
             }
         }
+
     }
 }
-
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun DisableSoftKeyboard(content: @Composable () -> Unit) {
