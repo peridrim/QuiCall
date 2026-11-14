@@ -1,6 +1,7 @@
 package com.example.quicall.screens.components
 
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
@@ -31,10 +32,17 @@ fun TopBar(
                 expanded = false,
                 onExpandedChange = {},
                 placeholder = { Text(stringResource(R.string.search_bar_hint)) },
-                leadingIcon = {
-                    //TODO add back icon
-                }
             )
-        }
+        },
+        colors = SearchBarDefaults.colors(
+            containerColor = MaterialTheme.colorScheme.surface,
+            inputFieldColors = SearchBarDefaults.inputFieldColors(
+                focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
+                cursorColor = MaterialTheme.colorScheme.primary,
+                focusedPlaceholderColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                unfocusedPlaceholderColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        )
     )
 }

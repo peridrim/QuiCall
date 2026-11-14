@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
@@ -105,6 +106,7 @@ fun QuiCallApp() {
     )
 
     NavigationSuiteScaffold(
+        containerColor = MaterialTheme.colorScheme.background,
         layoutType =
             when {
                 currentSelectedIndex == 1 -> NavigationSuiteType.None

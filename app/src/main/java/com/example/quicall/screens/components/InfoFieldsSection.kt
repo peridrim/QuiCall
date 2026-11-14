@@ -10,7 +10,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -58,10 +61,16 @@ fun InfoFieldsSection(
             leadingIcon = {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_person),
-                    contentDescription = null
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onSurface
                 )
             },
-            label = { Text(text = nameFieldText) },
+            label = {
+                Text(
+                    text = nameFieldText,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            },
             singleLine = true,
             isError = uiState.isNameFieldEmpty,
             supportingText = { if (uiState.isSupportNameTextVisible) Text(stringResource(R.string.support_text_field_empty_name)) },
@@ -85,10 +94,16 @@ fun InfoFieldsSection(
             leadingIcon = {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_person),
-                    contentDescription = null
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onSurface
                 )
             },
-            label = { Text(text = lastNameFieldText) },
+            label = {
+                Text(
+                    text = lastNameFieldText,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            },
             singleLine = true,
             isError = false,
             supportingText = {},
@@ -102,10 +117,16 @@ fun InfoFieldsSection(
             leadingIcon = {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_add_phone_number),
-                    contentDescription = null
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onSurface
                 )
             },
-            label = { Text(text = phoneNumberFieldText) },
+            label = {
+                Text(
+                    text = phoneNumberFieldText,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            },
             singleLine = true,
             isError = uiState.isPhoneNumberFieldEmpty,
             supportingText = { if (uiState.isSupportPhoneNumberTextVisible) Text(stringResource(R.string.support_text_field_empty_phone_number)) },
@@ -129,10 +150,16 @@ fun InfoFieldsSection(
             leadingIcon = {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_email),
-                    contentDescription = null
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onSurface
                 )
             },
-            label = { Text(text = emailFieldText) },
+            label = {
+                Text(
+                    text = emailFieldText,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            },
             singleLine = true,
             isError = false,
             supportingText = {},
@@ -154,18 +181,29 @@ fun InfoFieldsSection(
                     .aspectRatio(3f),
                 onClick = {
                         onSaveContact()
-                }
+                },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary
+                )
             ) {
-                Text(stringResource(R.string.save_contact_btn))
+                Text(
+                    stringResource(R.string.save_contact_btn),
+                    color = MaterialTheme.colorScheme.onSurface
+                )
             }
 
             Button(
                 modifier = Modifier
                     .weight(1f)
                     .aspectRatio(3f),
-                onClick = { onBackClicked() }
+                onClick = { onBackClicked() },
+
             ) {
-                Text(stringResource(R.string.cancel_contact_btn))
+                Text(
+                    stringResource(R.string.cancel_contact_btn),
+                    color = MaterialTheme.colorScheme.onSurface
+                )
             }
         }
     }

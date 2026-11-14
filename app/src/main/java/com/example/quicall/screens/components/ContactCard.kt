@@ -49,7 +49,7 @@ fun ContactCard(
             modifier = Modifier
                 .fillMaxSize()
                 .clip(MaterialTheme.shapes.medium),
-            colors = ListItemDefaults.colors(containerColor = Color(0xFF00FF88)),
+            colors = ListItemDefaults.colors(containerColor = MaterialTheme.colorScheme.surface),
             leadingContent = {
                 Image(
                     modifier =
@@ -70,13 +70,15 @@ fun ContactCard(
                     Text(
                         text = name,
                         maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
+                        overflow = TextOverflow.Ellipsis,
+                        color = MaterialTheme.colorScheme.onSurface
                     )
 
                     Text(
                         text = lastName,
                         maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
+                        overflow = TextOverflow.Ellipsis,
+                        color = MaterialTheme.colorScheme.onSurface
                     )
 
                 }
@@ -84,7 +86,8 @@ fun ContactCard(
             supportingContent = {
                 Text(
                     text = phoneNumber,
-                    maxLines = 1
+                    maxLines = 1,
+                    color = MaterialTheme.colorScheme.onSurface
                 )
             },
             trailingContent = {
@@ -106,7 +109,8 @@ fun ContactCard(
                             modifier = Modifier
                                 .size(dimensionResource(R.dimen.btn_icon_size)),
                             painter = painterResource(R.drawable.ic_call),
-                            contentDescription = null
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.onSurface
                         )
                     }
 
@@ -122,7 +126,8 @@ fun ContactCard(
                             modifier = Modifier
                                 .size(dimensionResource(R.dimen.btn_icon_size)),
                             painter = painterResource(R.drawable.ic_close),
-                            contentDescription = null
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.onSurface
                         )
                     }
                 }

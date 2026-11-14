@@ -2,6 +2,7 @@ package com.example.quicall.screens.add_contact
 
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,6 +17,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -107,6 +109,9 @@ fun CreateContactContent(
                         .size(100.dp)
                         .clip(CircleShape)
                         .clickable {}
+                        .background(
+                            color = MaterialTheme.colorScheme.surface
+                        )
                 ) {
                     Image(
                         modifier = Modifier
@@ -114,8 +119,16 @@ fun CreateContactContent(
                             .clip(CircleShape),
                         painter = painterResource(id = R.drawable.test_img),
                         contentDescription = null,
-
                         contentScale = ContentScale.FillBounds,
+                    )
+
+                    Icon(
+                        modifier = Modifier
+                            .size(dimensionResource(R.dimen.btn_icon_size))
+                            .align(Alignment.BottomEnd),
+                        painter = painterResource(id = R.drawable.ic_add),
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onSurface
                     )
                 }
 
