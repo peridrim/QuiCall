@@ -1,5 +1,7 @@
 package com.example.quicall.screens.add_contact
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.lifecycle.ViewModel
 import com.example.quicall.data.FormField
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -84,5 +86,11 @@ class AddContactPageViewModel: ViewModel() {
         }
 
         //TODO: Save contact
+    }
+
+    fun chooseContactImage(uri: Uri?) {
+        _uiState.update { currentState ->
+            currentState.copy(selectedImageUri = uri)
+        }
     }
 }
