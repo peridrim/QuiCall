@@ -122,14 +122,24 @@ fun CreateContactContent(
                         contentScale = ContentScale.FillBounds,
                     )
 
-                    Icon(
+                    Box(
                         modifier = Modifier
-                            .size(dimensionResource(R.dimen.btn_icon_size))
-                            .align(Alignment.BottomEnd),
-                        painter = painterResource(id = R.drawable.ic_add),
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onSurface
-                    )
+                            .size(32.dp)
+                            .align(Alignment.BottomEnd)
+                            .background(
+                                color = MaterialTheme.colorScheme.surface,
+                                shape = CircleShape
+                            )
+                    ) {
+                        Icon(
+                            modifier = Modifier
+                                .size(dimensionResource(R.dimen.btn_icon_size)),
+                            painter = painterResource(id = R.drawable.ic_add),
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.onSurface
+                        )
+                    }
+
                 }
 
                 InfoFieldsSection(
