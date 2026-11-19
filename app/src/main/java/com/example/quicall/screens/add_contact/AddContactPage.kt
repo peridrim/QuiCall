@@ -192,6 +192,7 @@ private fun CreateProfilePhoto(
     onChooseImage: () -> Unit = {},
 ) {
     val asyncImage = rememberAsyncImagePainter(model = uiState.selectedImageUri)
+    val iconResource = painterResource(id = R.drawable.ic_person)
     Box(
         modifier = Modifier
             .size(size)
@@ -211,7 +212,7 @@ private fun CreateProfilePhoto(
                 if (uiState.selectedImageUri != null)
                     asyncImage
                 else
-                    painterResource(id = R.drawable.ic_person),
+                    iconResource,
             contentDescription = null,
             contentScale = ContentScale.Crop,
         )

@@ -3,7 +3,9 @@ package com.example.quicall.screens.add_contact
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.lifecycle.ViewModel
+import com.example.quicall.data.DataSource
 import com.example.quicall.data.FormField
+import com.example.quicall.data.model.Contact
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -82,10 +84,19 @@ class AddContactPageViewModel: ViewModel() {
 
             isPhoneNumberEmpty -> showTextFieldError(isTextVisible = true, isFieldEmpty = true, field = FormField.PHONE_NUMBER)
 
-            else -> showTextFieldError(isTextVisible = false, isFieldEmpty = false, field = FormField.UNSPECIFIED)
+            else -> {
+                showTextFieldError(isTextVisible = false, isFieldEmpty = false, field = FormField.UNSPECIFIED)
+                //TODO: Save contact
+                val newContact = Contact(
+                    id = (DataSource.dummyContacts.size + 1).toString(),
+                    firstName = currentState.name,
+                    lastName = currentState.lastName,
+                    phoneNumber = currentState.phoneNumber
+                )
+                DataSource.dummyContacts.add(newContact)
+                println("TEST: Contact saved")
+            }
         }
-
-        //TODO: Save contact
     }
 
     fun chooseContactImage(uri: Uri?) {

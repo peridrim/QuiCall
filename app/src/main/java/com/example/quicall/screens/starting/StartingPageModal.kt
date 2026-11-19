@@ -65,17 +65,6 @@ fun StartingPageModal(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    val configuration = LocalConfiguration.current
-    val screenWidth = configuration.screenWidthDp.dp
-    val context = LocalContext.current
-    LaunchedEffect(Unit) {
-        Toast.makeText(
-            context,
-            configuration.screenWidthDp.toString(),
-            Toast.LENGTH_SHORT
-        ).show()
-    }
-
     val dialPadContent: @Composable () -> Unit = {
         DialPadLayout(
             modifier = modifier,
