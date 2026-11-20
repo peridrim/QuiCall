@@ -23,6 +23,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.navigation.NavController
 import com.example.quicall.R
 import com.example.quicall.data.FormField
 import com.example.quicall.screens.add_contact.AddContactUiState
@@ -31,10 +32,11 @@ import com.example.quicall.screens.add_contact.AddContactUiState
 fun InfoFieldsSection(
     modifier: Modifier = Modifier,
     uiState: AddContactUiState,
+    navController: NavController? = null,
     onBackClicked: () -> Unit = {},
     onTextFieldValueChange: (String, FormField) -> Unit = { _, _ -> },
-    showTextFieldError: (Boolean, Boolean, FormField) -> Unit = { _, _, _ ->},
-    onSaveContact: () -> Unit = {}
+    showTextFieldError: (Boolean, Boolean, FormField) -> Unit = { _, _, _ -> },
+    onSaveContact: () -> Boolean = { false }
 ) {
     val nameFieldText = stringResource(R.string.text_field_label_name)
     val lastNameFieldText = stringResource(R.string.text_field_label_lastname)
@@ -177,7 +179,7 @@ fun InfoFieldsSection(
                     .weight(1f)
                     .aspectRatio(3f),
                 onClick = {
-                        onSaveContact()
+                        if (onSaveContact()) navController?.popBackStack()
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.primary,

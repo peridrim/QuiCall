@@ -69,7 +69,7 @@ class AddContactPageViewModel: ViewModel() {
         }
     }
 
-    fun onSaveContact() {
+    fun onSaveContact(): Boolean {
         val currentState = _uiState.value
         val isNameEmpty = currentState.name.isBlank()
         val isPhoneNumberEmpty = currentState.phoneNumber.isBlank()
@@ -78,15 +78,22 @@ class AddContactPageViewModel: ViewModel() {
             isNameEmpty && isPhoneNumberEmpty -> {
                 showTextFieldError(isTextVisible = true, isFieldEmpty = true, field = FormField.NAME)
                 showTextFieldError(isTextVisible = true, isFieldEmpty = true, field = FormField.PHONE_NUMBER)
+                return false
             }
 
-            isNameEmpty -> showTextFieldError(isTextVisible = true, isFieldEmpty = true, field = FormField.NAME)
+            isNameEmpty -> {
+                showTextFieldError(isTextVisible = true, isFieldEmpty = true, field = FormField.NAME)
+                return false
+            }
 
-            isPhoneNumberEmpty -> showTextFieldError(isTextVisible = true, isFieldEmpty = true, field = FormField.PHONE_NUMBER)
+            isPhoneNumberEmpty -> {
+                showTextFieldError(isTextVisible = true, isFieldEmpty = true, field = FormField.PHONE_NUMBER)
+                return false
+            }
 
             else -> {
                 showTextFieldError(isTextVisible = false, isFieldEmpty = false, field = FormField.UNSPECIFIED)
-                //TODO: Save contact
+                //TODO: Save contact, add popBack right after
                 val newContact = Contact(
                     id = (DataSource.dummyContacts.size + 1).toString(),
                     firstName = currentState.name,
@@ -95,6 +102,7 @@ class AddContactPageViewModel: ViewModel() {
                 )
                 DataSource.dummyContacts.add(newContact)
                 println("TEST: Contact saved")
+                return true
             }
         }
     }

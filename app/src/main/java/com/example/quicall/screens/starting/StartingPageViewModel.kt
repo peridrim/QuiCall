@@ -29,15 +29,6 @@ class StartingPageViewModel : ViewModel() {
         }
     }
 
-    fun refreshContacts() {
-        _uiState.update { currentState ->
-            currentState.copy(
-                contacts = DataSource.dummyContacts,
-                filteredContacts = DataSource.dummyContacts
-            )
-        }
-    }
-
     fun removeContact() {
         val contactToDelete = _uiState.value.contactToRemove ?: return
         _uiState.update { currentState ->

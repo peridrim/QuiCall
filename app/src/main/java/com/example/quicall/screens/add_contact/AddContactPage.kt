@@ -81,6 +81,7 @@ fun CreateContactPage(
     CreateContactContent(
         modifier = modifier,
         uiState = uiState,
+        navController = navController,
         onBackClicked = { navController.popBackStack() },
         onTextFieldValueChange = { newValue, field -> viewModel.onTextFieldValueChange(newValue, field) },
         showTextFieldError = { isTextVisible, isFieldEmpty, field -> viewModel.showTextFieldError(isTextVisible, isFieldEmpty, field) },
@@ -94,10 +95,11 @@ fun CreateContactPage(
 fun CreateContactContent(
     modifier: Modifier = Modifier,
     uiState: AddContactUiState,
+    navController: NavHostController? = null,
     onBackClicked: () -> Unit = {},
     onTextFieldValueChange: (String, FormField) -> Unit = { _, _ -> },
     showTextFieldError: (Boolean, Boolean, FormField) -> Unit = { _, _, _ ->},
-    onSaveContact: () -> Unit = {},
+    onSaveContact: () -> Boolean = { false },
     onChooseImage: () -> Unit = {}
 ) {
 
@@ -146,6 +148,7 @@ fun CreateContactContent(
 
                 InfoFieldsSection(
                     uiState = uiState,
+                    navController = navController,
                     onBackClicked = onBackClicked,
                     onTextFieldValueChange = onTextFieldValueChange,
                     showTextFieldError = showTextFieldError,
@@ -170,6 +173,7 @@ fun CreateContactContent(
 
                 InfoFieldsSection(
                     uiState = uiState,
+                    navController = navController,
                     modifier = Modifier
                         .weight(1f)
                         .imePadding()
