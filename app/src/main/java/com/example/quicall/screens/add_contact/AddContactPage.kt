@@ -134,6 +134,7 @@ fun CreateContactContent(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
+                    .imePadding()
                     .padding(paddingValues)
                     .verticalScroll(scrollState),
                 horizontalAlignment = Alignment.CenterHorizontally,

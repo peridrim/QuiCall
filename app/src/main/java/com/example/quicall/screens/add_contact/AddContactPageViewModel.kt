@@ -93,7 +93,7 @@ class AddContactPageViewModel: ViewModel() {
 
             else -> {
                 showTextFieldError(isTextVisible = false, isFieldEmpty = false, field = FormField.UNSPECIFIED)
-                //TODO: Save contact, add popBack right after
+                //TODO: Save contact
                 val newContact = Contact(
                     id = (DataSource.dummyContacts.size + 1).toString(),
                     firstName = currentState.name,
