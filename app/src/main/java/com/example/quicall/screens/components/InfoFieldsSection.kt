@@ -23,8 +23,10 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.navigation.NavController
 import com.example.quicall.R
+import com.example.quicall.data.Constants
 import com.example.quicall.data.FormField
 import com.example.quicall.screens.add_contact.AddContactUiState
 
@@ -46,7 +48,7 @@ fun InfoFieldsSection(
     val textFieldModifier = Modifier
         .fillMaxWidth()
         .padding(all = dimensionResource(R.dimen.text_field_padding))
-    val keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
+    val keyboardTextOptions = KeyboardOptions(imeAction = ImeAction.Next)
     val focusManager = LocalFocusManager.current
 
     Column(
@@ -73,7 +75,7 @@ fun InfoFieldsSection(
             singleLine = true,
             isError = uiState.isNameFieldEmpty,
             supportingText = { if (uiState.isSupportNameTextVisible) Text(stringResource(R.string.support_text_field_empty_name)) },
-            keyboardOptions = keyboardOptions,
+            keyboardOptions = keyboardTextOptions,
             keyboardActions = KeyboardActions(
                 onNext = {
                     if (uiState.name.isNotBlank()) {
@@ -106,13 +108,16 @@ fun InfoFieldsSection(
             singleLine = true,
             isError = false,
             supportingText = {},
-            keyboardOptions = keyboardOptions
+            keyboardOptions = keyboardTextOptions
         )
 
         OutlinedTextField(
             modifier = textFieldModifier,
             value = uiState.phoneNumber,
-            onValueChange = { newValue -> onTextFieldValueChange(newValue, FormField.PHONE_NUMBER) },
+            onValueChange = {
+                newValue ->
+                if (newValue.all { it.isDigit() } && newValue.length <= Constants.MAX_PHONE_NUMBER_LENGTH) { onTextFieldValueChange(newValue, FormField.PHONE_NUMBER) }
+            },
             leadingIcon = {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_add_phone_number),
@@ -129,7 +134,10 @@ fun InfoFieldsSection(
             singleLine = true,
             isError = uiState.isPhoneNumberFieldEmpty,
             supportingText = { if (uiState.isSupportPhoneNumberTextVisible) Text(stringResource(R.string.support_text_field_empty_phone_number)) },
-            keyboardOptions = keyboardOptions,
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Next,
+                keyboardType = KeyboardType.Number
+            ),
             keyboardActions = KeyboardActions(
                 onNext = {
                     if (uiState.phoneNumber.isNotBlank()) {

@@ -6,6 +6,7 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
+import com.example.quicall.data.Constants
 import com.example.quicall.data.DataSource
 import com.example.quicall.data.model.Contact
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -66,7 +67,7 @@ class StartingPageViewModel : ViewModel() {
         val currentSelection = _uiState.value.dialDigits.selection
         val currentText = _uiState.value.dialDigits.text
 
-        if (currentText.length < 14) {
+        if (currentText.length < Constants.MAX_PHONE_NUMBER_LENGTH) {
             val beforeSelection = currentText.substring(0, currentSelection.start)
             val afterSelection = currentText.substring(currentSelection.end)
 
